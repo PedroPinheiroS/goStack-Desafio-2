@@ -44,7 +44,7 @@ const repository = { id: uuid(), title, url, techs, likes: 0 }
 
 repositories.push(repository);
 
-return response.status(201).json({ repository });
+return response.status(201).json( repository );
 
   
 });
@@ -80,7 +80,7 @@ app.delete("/repositories/:id", (request, response) => {
   const repositoryIndex = repositories.findIndex(repo => repo.id === id);
 
   if (repositoryIndex < 0 ) {
-    return response.status(404).json({ erro: 'Repositório não encontrado'});
+    return response.status(400).json({ erro: 'Repositório não encontrado'});
   }
 
   repositories.splice(repositoryIndex, 1);
@@ -91,22 +91,21 @@ app.delete("/repositories/:id", (request, response) => {
 
 app.post("/repositories/:id/like", (request, response) => {
 
-const { id } = request.params;
+    const { id } = request.params;
 
-const repositoryIndex = repositories.findIndex(repo => repo.id === id);
+    const repositoryIndex = repositories.findIndex(repo => repo.id === id);
 
-if (repositoryIndex < 0 ) {
-  return response.status(404).json({ erro: 'Repositório não encontrado'});
-}
+    if (repositoryIndex < 0 ) {
+      return response.status(400).json({ erro: 'Repositório não encontrado'});
+    }
 
-const repo = repositories[repositoryIndex];
+    const repo = repositories[repositoryIndex];
 
-repo.likes++;
+    repo.likes++;
 
-repositories[repositoryIndex] = repo;
+    repositories[repositoryIndex] = repo;
 
-return response.status(201).json({ repo });
-
+    return response.status(201).json({likes: repo.likes});
 
 });
 
